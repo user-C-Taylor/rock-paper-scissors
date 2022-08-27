@@ -52,8 +52,6 @@ function playRound(round) {
         `Computer wins the round! ${computerSelection} beats ${playerSelection}.`;
     
     return message;
-    
-    
 }
 
 function game() {
