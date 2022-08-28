@@ -26,10 +26,8 @@ function capitalize(string) {
 
 function playRound(round) {
   const playerInput = 
-    (round === 'One') ? prompt(`Round ${round}: Best out of five 
-      rounds. \nPlease type your selection: rock, paper, or scissors.`) 
-    : prompt(`Round ${round}: \nPlease type your selection: rock, 
-      paper, or scissors.`);
+    (round === 'One') ? prompt(`Round ${round}: Best out of five rounds. \nPlease type your selection: rock, paper, or scissors.`) 
+    : prompt(`Round ${round}: \nPlease type your selection: rock, paper, or scissors.`);
   // Pressing the prompt cancel button returns null.
   if(playerInput === null) { 
     return 'Game canceled.';
@@ -56,10 +54,8 @@ function playRound(round) {
       computerSelection === 'Rock') ||
       (playerSelection === 'Scissors' && 
       computerSelection === 'Paper')
-      ) ? `You win the round! ${playerSelection} beats 
-      ${computerSelection}.` 
-    : `Computer wins the round! ${computerSelection} beats 
-      ${playerSelection}.`;
+      ) ? `You win the round! ${playerSelection} beats ${computerSelection}.` 
+    : `Computer wins the round! ${computerSelection} beats ${playerSelection}.`;
     
   return message;
 }
@@ -93,13 +89,9 @@ function game() {
     : '';
 
   const gameWinMessage =
-    (playerScore > computerScore) ? `You won the game ${playerScore} 
-      to ${computerScore}, with ${tieScore} tied round${pluralTie}.` 
-    : (computerScore > playerScore) ? `Computer won the game 
-      ${computerScore} to ${playerScore} with ${tieScore} tied round
-      ${pluralTie}.` 
-    : `You tied the game with the computer with each of you winning 
-      ${playerScore} rounds and tying ${tieScore} round${pluralTie}.`;
+    (playerScore > computerScore) ? `You won the game ${playerScore} to ${computerScore}, with ${tieScore} tied round${pluralTie}.` 
+    : (computerScore > playerScore) ? `Computer won the game ${computerScore} to ${playerScore} with ${tieScore} tied round${pluralTie}.` 
+    : `You tied the game with the computer with each of you winning ${playerScore} rounds and tying ${tieScore} round${pluralTie}.`;
 
   return gameWinMessage;
 }
