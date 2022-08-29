@@ -87,11 +87,14 @@ function game() {
   const pluralTie =
     (tieScore !== 1) ? 's' 
     : '';
+  const oneWinPlural = 
+    (playerScore !== 1) ? 's'
+    : '';
 
   const gameWinMessage =
     (playerScore > computerScore) ? `You won the game ${playerScore} to ${computerScore}, with ${tieScore} tied round${pluralTie}.` 
     : (computerScore > playerScore) ? `Computer won the game ${computerScore} to ${playerScore} with ${tieScore} tied round${pluralTie}.` 
-    : `You tied the game with the computer with each of you winning ${playerScore} rounds and tying ${tieScore} round${pluralTie}.`;
+    : `You tied the game with the computer with each of you winning ${playerScore} round${oneWinPlural} and tying ${tieScore} round${pluralTie}.`;
 
   return gameWinMessage;
 }
