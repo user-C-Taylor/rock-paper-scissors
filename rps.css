@@ -1,0 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300&display=swap');
+
+body {
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #aaaaaa;
+}
+
+.space-before,
+.space-after {
+  flex: 1;
+}
+
+.game-section {
+  flex: 0 1 540px;
+  display: flex;
+  background-color: #2e2ef8;
+}
+
+.game-container {
+  flex: 0 1 930px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  gap: 30px;
+}
+
+.game-left,
+.game-right {
+  flex: 0 1 120px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: #CFAA7C;
+}
+
+/* removed will-change: transform */
+.items {
+  transition: transform 600ms;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  background-color: #2e2ef8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.items:hover {
+  cursor: pointer;
+}
+
+.Z-rock-p {
+  transform: translateZ(0.0001px);
+}
+
+.Z-paper-p {
+  transform: translateZ(0.0002px);
+}
+
+.Z-scissors-p {
+  transform: translateZ(0.0003px);
+}
+
+.Z-rock-c {
+  transform: translateZ(0.0004px);
+}
+
+.Z-paper-c {
+  transform: translateZ(0.0005px);
+}
+
+.Z-scissors-p {
+  transform: translateZ(0.0006px);
+}
+
+.rock-p-transition {
+  transform: translateX(var(--rock-p-mv-x)) translateY(var(--rock-p-mv-y)) translateZ(0.0001px);
+}
+
+.paper-p-transition {
+  transform: translateX(var(--paper-p-mv-x)) translateY(var(--paper-p-mv-y)) translateZ(0.0002px);
+}
+
+.scissors-p-trans {
+  transform: translateX(var(--scissors-p-mv-x)) translateY(var(--scissors-p-mv-y)) translateZ(0.0003px);
+}
+
+.rock-c-transition {
+  transform: translateX(var(--rock-c-mv-x)) translateY(var(--rock-c-mv-y)) translateZ(0.0004px);
+}
+
+.paper-c-transition {
+  transform: translateX(var(--paper-c-mv-x)) translateY(var(--paper-c-mv-y)) translateZ(0.0005px);
+}
+
+.scissors-c-trans {
+  transform: translateX(var(--scissors-c-mv-x)) translateY(var(--scissors-c-mv-y)) translateZ(0.0006px);
+}
+
+/* Box-sizing allows flex-basis to include padding. */
+.game-center {
+  flex: 0 1 630px;
+  padding: 15px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #888888;
+  box-sizing: border-box;
+}
+
+.g-center-top {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.player-score,
+.round,
+.computer-score {
+  padding: 10px;
+  text-align: center;
+  background-color: #FFFFFF;
+}
+
+.player-score,
+.computer-score {
+  width: 120px;
+}
+
+.round {
+  width: 80px;
+}
+
+.p-score-score,
+.round-round,
+.c-score-score {
+  font-size: 30px;
+}
+
+.g-center-center {
+  flex: 1;
+  padding: 10px;
+  box-shadow: 0px 0px 10px #FFDE2E;
+  display: flex;
+  gap: 10px;
+}
+
+.battle-left,
+.battle-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid blue;
+}
+
+#target-player,
+#target-comp {
+  width: 80px;
+  height: 80px;
+  border: 2px solid #FF0000;
+}
+
+/* Default align items (for parent) is stretch so width unneeded.
+   Flex-basis is height, since parent is column. */
+.g-center-bottom {
+  flex: 0 1 80px;
+  border-radius: 15px;
+  background-color: #CFAA7C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+#startModal {
+  display: block;
+}
+
+#newGmModal {
+  display: none;
+}
+
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: #000000;
+  background-color: #00000000;
+}
+
+.st-modal-content,
+.ng-modal-content {
+  background-color: #ad9272;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid #944949;
+  width: 50%;
+  text-align: center;
+  font-size: 20px;
+}

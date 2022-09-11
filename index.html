@@ -3,9 +3,77 @@
   <head>
     <meta charset="utf-8">
     <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="rps.css">
+
+    <script src="rps.js" defer></script>
   </head>
   <body>
+    <div class="body">
+      <div class="space-before">
+      </div>
+      <div class="game-section">
+        <div class="game-container">
+          
+          <div class="game-left">
+              <div id="rock-player" class="items">Rock</div>
+              <div id="paper-player" class="items">Paper</div>
+              <div id="scissors-player" class="items">Scissors</div>
+          </div>
 
-    <script src="rps.js"></script>
+          <div class="game-center">
+            <div class="g-center-top">
+              <div class="player-score">
+                <div class="p-score-score">0</div>
+                <div class="p-score-label">Player Score</div>
+              </div>
+              <div class="round">
+                <div class="round-round">1</div>
+                <div class="round-label">Round</div>
+              </div>
+              <div class="computer-score">
+                <div class="c-score-score">0</div>
+                <div class="c-score-label">Computer Score</div>
+              </div>
+            </div>
+
+            <div class="g-center-center">
+              <div class="battle-left">
+                <div id="target-player"></div>
+              </div>
+              <div class="battle-right">
+                <div id="target-comp"></div>
+              </div>
+            </div>
+
+            <div class="g-center-bottom"></div>
+          </div>
+
+          <div class="game-right">
+            <div id="rock-comp" class="items">Rock</div>
+            <div id="paper-comp" class="items">Paper</div>
+            <div id="scissors-comp" class="items">Scissors</div>
+          </div>
+        </div>
+      </div>
+      <div class="space-after">
+      </div>
+    </div>
+
+    <div id="startModal" class="modal">
+      
+      <div class="st-modal-content">
+        <div>First to five points.</div>
+        <button id="startButton">Play Game</button>
+      </div>
+
+    </div>
+    <div id="newGmModal" class="modal">
+      
+      <div class="ng-modal-content">
+        <div id="gmWinMsgBox"></div>
+        <button id="ngButton">New Game</button>
+      </div>
+
+    </div>
   </body>
 </html>
