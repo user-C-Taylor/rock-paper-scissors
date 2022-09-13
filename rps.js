@@ -11,31 +11,53 @@
 
 /***************************************************************/
 
-// There are two transition end events. the second is the one I need.
+function getElem(classOrId){
+  return document.querySelector(classOrId);
+}
 
-const rockPlayer = document.getElementById('rock-player');
-const paperPlayer = document.getElementById('paper-player');
-const scissorsPlayer = document.getElementById('scissors-player');
-const rockComp = document.getElementById('rock-comp');
-const paperComp = document.getElementById('paper-comp');
-const scissorsComp = document.getElementById('scissors-comp');
+function adder(id, initialClasses, type, text, parent, url) {
+  const elem = document.createElement(type);
+  if(id) elem.setAttribute('id', id);
+  if(initialClasses) elem.setAttribute('class', initialClasses);
+  if(text) elem.textContent = text;
+  if(type === 'img') elem.setAttribute('draggable', 'false');
+  if(type === 'img' && url) elem.setAttribute('src', url);
+  parent.appendChild(elem);
+  return elem;
+}
 
-const targetPlayer = document.getElementById('target-player');
-const targetComp = document.getElementById('target-comp');
+const gameLeft = getElem('.game-left');
+const gameRight = getElem('.game-right');
 
-const gameLeft = document.querySelector('.game-left');
-const battleLeft = document.querySelector('.battle-left');
-const battleRight = document.querySelector('.battle-right');
-const gCenterBottom = document.querySelector('.g-center-bottom');
-const pScoreScore = document.querySelector('.p-score-score');
-const cScoreScore = document.querySelector('.c-score-score');
-const roundRound = document.querySelector('.round-round');
+const rockPlayer = adder('rock-player', 'items', 'img', '', gameLeft, 'images/stone-143-130.png')
+const paperPlayer = adder('paper-player', 'items', 'img', '', gameLeft, 'images/paper-114-150.png');
+const scissorsPlayer = adder('scissors-player', 'items', 'img', '', gameLeft, 'images/scissors-75-130.png');
+const rockComp = adder('rock-comp', 'items', 'img', '', gameRight, 'images/stone-143-130.png');
+const paperComp = adder('paper-comp','items', 'img', '', gameRight, 'images/paper-114-150.png');
+const scissorsComp = adder('scissors-comp', 'items', 'img', '', gameRight, 'images/scissors-75-130.png');
 
-const startModal = document.getElementById('startModal');
-const startButton = document.getElementById('startButton');
-const newGmModal = document.getElementById('newGmModal');
-const gmWinMsgBox = document.getElementById('gmWinMsgBox');
-const ngButton = document.getElementById('ngButton');
+const targetPlayer = getElem('#target-player');
+const targetComp = getElem('#target-comp');
+
+
+const battleLeft = getElem('.battle-left');
+const battleRight = getElem('.battle-right');
+const gCenterBottom = getElem('.g-center-bottom');
+const pScoreScore = getElem('.p-score-score');
+const cScoreScore = getElem('.c-score-score');
+const roundRound = getElem('.round-round');
+
+const startModal = adder('startModal', 'modal', 'div', '', document.body, '');
+const stModalContent = adder('', 'st-modal-content', 'div', '', startModal, '');
+const intro = adder('intro', '', 'div', 'First to five points.', stModalContent, '');
+const startButton = adder('startButton', '', 'button', 'Play Game', stModalContent, '');
+
+const newGmModal = adder('newGmModal', 'modal', 'div', '', document.body, '');
+const ngModalContent = adder('', 'ng-modal-content', 'div', '', newGmModal, '');
+const gmWinMsgBox = adder('gmWinMsgBox', '', 'div', '', ngModalContent, '');
+const ngButton = adder('ngButton', '', 'button', 'New Game', ngModalContent, '');
+
+const decoy = adder('decoy', '', 'div', '', document.body, '');
 
 /* Remember units for custom variables, 
    else: in CSS, use e.g. calc(var(--customVar) * 1px).
@@ -117,6 +139,18 @@ function verifyXY(){
   });
 }
 
+function noDrag() {
+  const items = document.querySelectorAll('.items');
+  if (/(firefox)/i.test(navigator.userAgent)) {
+    items.forEach(item => 
+      item.addEventListener('dragstart', e => e.preventDefault()
+    ));
+  }
+}
+noDrag();
+
+document.oncontextmenu = new Function("return false;");
+
 function getComputerChoice() {
   const choice = Math.floor(Math.random() * 3);
   
@@ -177,6 +211,7 @@ function compTransition(){
   }
 }
 
+// probably needs to be in queue
 function setPlayerSelect(playerItem){
   if (playerItem === rockPlayer){
     playerSelect = 'rock';
@@ -187,73 +222,96 @@ function setPlayerSelect(playerItem){
   }
 }
 
-// Returns true if collision exists.
-function DoElementsCollide(){
-  const elemOne = chosenPItem.getBoundingClientRect();
-  const elemTwo = battleLeft.getBoundingClientRect();
-  const elemOneCenterX = elemOne.left + (0.5 * elemOne.width);
-  const elemOneCenterY = elemOne.top + (0.5 * elemOne.height);
-
-  return ((elemOneCenterX > elemTwo.left) &&
-          (elemOneCenterX < elemTwo.right)) &&
-         ((elemOneCenterY > elemTwo.top) &&
-          (elemOneCenterY < elemTwo.bottom));
-}
-
-function animateBattle(){
-  const inBattle = DoElementsCollide();
-  console.log('active');
-  battleLeft.style.backgroundColor = 
-      inBattle && roundWinner === 'player' ? '#00ff0080'
-    : inBattle && roundWinner === 'computer' ? '#ff000080'
-    : '';
-  battleRight.style.backgroundColor =
-      inBattle && roundWinner === 'computer' ? '#00ff0080'
-    : inBattle && roundWinner === 'player' ? '#ff000080'
-    : '';
-    if(!battleAnimEnd){
-      window.requestAnimationFrame(animateBattle);
-    } else{
-      battleLeft.style.backgroundColor = '';
-      battleRight.style.backgroundColor = '';
-    }
-}
-
-function battle(){
-  const comp = computerSelection.toLowerCase();
-  if(playerSelect === comp){
-      roundWinner = 'tie';
-  } else if(
-     (playerSelect === 'rock' && 
-      comp === 'scissors') ||
-     (playerSelect === 'paper' &&
-      comp === 'rock') ||
-     (playerSelect === 'scissors' &&
-      comp === 'paper')
-    ){
-      roundWinner = 'player';
-  } else{
-      roundWinner = 'computer';
-  }
-
-  //Transition battleLeft and battleRight.
-  animateBattle();
-  // Update round message and scoreboard.
-  roundResult();
-  scoreKeeper();
-}
 
 function transitionGo(playerItem, addedClass){
   playerItem.addEventListener('click', () => {
-    // Signal verifyXY() game is in play.
-    inPlay = true;
-    playerItem.classList.add(addedClass);
-    compTransition();
-    setPlayerSelect(playerItem);
-    // Signal to continue animateBattle() inside battle().
-    battleAnimEnd = false;
-    chosenPItem = playerItem;
-    battle();
+    queueN += 1;
+    // Preserve queueN specific to lexical context of round click event.
+    let m = queueN;
+    function queue(){
+      // Verify previous round is complete. Must be declared within 
+      // click event lexical context to access m and playerItem.
+      if(m > (n/2 || inPlay)){
+        window.requestAnimationFrame(queue);
+      } else if(pScore < gmWinN && cScore < gmWinN){
+        /* If game is not finished:
+           On click sequence initiated after doElementsCollide(), 
+           animateBattle() and battle() are declared.
+        */
+
+        // Returns true if collision exists.
+        function doElementsCollide(){
+          const elemOne = playerItem.getBoundingClientRect();
+          const elemTwo = battleLeft.getBoundingClientRect();
+          const elemOneCenterX = elemOne.left + (0.5 * elemOne.width);
+          const elemOneCenterY = elemOne.top + (0.5 * elemOne.height);
+
+          return ((elemOneCenterX > elemTwo.left) &&
+                  (elemOneCenterX < elemTwo.right)) &&
+                ((elemOneCenterY > elemTwo.top) &&
+                  (elemOneCenterY < elemTwo.bottom));
+        }
+
+        function animateBattle(){
+          const inBattle = doElementsCollide();
+          console.log('active');
+          battleLeft.style.backgroundColor = 
+              inBattle && roundWinner === 'player' ? '#00ff0060'
+            : inBattle && roundWinner === 'computer' ? '#ff000060'
+            : '';
+          battleRight.style.backgroundColor =
+              inBattle && roundWinner === 'computer' ? '#00ff0060'
+            : inBattle && roundWinner === 'player' ? '#ff000060'
+            : '';
+            if(!battleAnimEnd){
+              window.requestAnimationFrame(animateBattle);
+            } else{
+              battleLeft.style.backgroundColor = '';
+              battleRight.style.backgroundColor = '';
+            }
+        }
+
+        function battle(){
+          const comp = computerSelection.toLowerCase();
+          if(playerSelect === comp){
+              roundWinner = 'tie';
+          } else if(
+            (playerSelect === 'rock' && 
+              comp === 'scissors') ||
+            (playerSelect === 'paper' &&
+              comp === 'rock') ||
+            (playerSelect === 'scissors' &&
+              comp === 'paper')
+            ){
+              roundWinner = 'player';
+          } else{
+              roundWinner = 'computer';
+          }
+
+          //Transition battleLeft and battleRight.
+          animateBattle();
+          // Update round message and scoreboard.
+          roundResult();
+          scoreKeeper();
+        }
+
+        // Signal verifyXY() and queue() game is in play.
+        inPlay = true;
+        playerItem.classList.add(addedClass);
+        decoy.classList.add('decoy-o-transition');
+        compTransition();
+        setPlayerSelect(playerItem);
+        // Signal to continue animateBattle() inside battle().
+        battleAnimEnd = false;
+        // deprecated: chosenPItem = playerItem;
+        battle();
+        if(pScore < gmWinN && cScore < gmWinN) roundN += 1;
+      } else{
+        // Clear queue of clicks in excess of game length.
+        return;
+      }
+    }
+    queue();
   });
 }
 
@@ -299,8 +357,10 @@ function scoreKeeper(){
   } else if(roundWinner === 'computer'){
     cScore += 1;
     cScoreScore.textContent = cScore;
-  } else{
+  } else if(roundWinner === 'tie'){
     tieScore += 1;
+  } else {
+    console.log('scorekeeper error');
   }
 }
 
@@ -318,11 +378,17 @@ function gameWinMsg(){
 // For explanation, see transitionClass comment.
 const zClass = /\s*\bZ-[a-z]+?-[pc]\b/g;
 
-function cycleRound(compItem){
-  let n = 0;
-  compItem.addEventListener('transitionend', () => {
+/* decoy was chosen as the target for the event listener as it has only 
+   one transitioning property. This prevents cycleRound() from 
+   unexpectedly firing additional times -- early, for example. An early 
+   firing of cycleRound() will switch inPlay to false, which can result 
+   in resetXY firing while an item is in mid-transition. Other issues 
+   are also created when cycleRound fires at the wrong time.
+*/
+function cycleRound(){
+  decoy.addEventListener('transitionend', () => {
     n += 1;
-    if(pScore === 3 || cScore === 3){
+    if(pScore === gmWinN || cScore === gmWinN){
       gmWinMsgBox.textContent = gameWinMsg();
       newGmModal.style.display = 'block';
     }
@@ -331,17 +397,19 @@ function cycleRound(compItem){
       items.forEach(item => {
         item.className = item.className.replace(zClass, '');
       });
+
+      if(pScore === gmWinN || cScore === gmWinN){
+        ngModalContent.style.display = 'block';
+      }
+
       // Signal to stop animateBattle().
       battleAnimEnd = true;
-      console.log('player select = ' + playerSelect);
       
-      roundN += 1;
       roundRound.textContent = roundN;
-      // Signal verifyXY() game is not in play.
-      inPlay = false;
-
       
       computerSelection = capitalize(getComputerChoice());
+      // Signal verifyXY() and queue() game is not in play.
+      inPlay = false;
     }
   });
 }
@@ -357,30 +425,41 @@ function clearBoard(){
   roundRound.textContent = roundN;
 
   gCenterBottom.textContent = '';
-  gmWinMsgBox.textContent = '';
+  setTimeout(() => {
+    gmWinMsgBox.textContent = '';
+  }, 250);
+  
 }
 
 let nMouseMove = 0;
+// gmWinN sets number of round wins needed to win the game.
+let gmWinN = 3;
 let playerSelect = '';
 let roundWinner = '';
 let battleAnimEnd = true;
-let chosenPItem;
 let inPlay = false;
 let computerSelection = capitalize(getComputerChoice());
 let pScore = 0;
 let cScore = 0;
 let tieScore = 0;
 let roundN = 1;
+let queueN = -1;
+let n = 0;
 /***************************************************************/
 
 startButton.addEventListener('click', () => {
   playRound();
-  startModal.style.display = 'none';
+  setTimeout(() => {
+    startModal.style.display = 'none';
+  }, 200);
 })
 
 ngButton.addEventListener('click', () => {
   clearBoard();
-  newGmModal.style.display = 'none';
+  setTimeout(() => {
+    newGmModal.style.display = 'none';
+    ngModalContent.style.display = 'none';
+  }, 200);
 })
 
 function playRound() {
@@ -411,11 +490,11 @@ function playRound() {
 
   const items = document.querySelectorAll('.items');
   items.forEach(item => item.addEventListener('transitionend', removeTransition));
+  decoy.addEventListener('transitionend', removeTransition);
 
   
-  cycleRound(rockComp);
-  cycleRound(paperComp);
-  cycleRound(scissorsComp);
+  cycleRound();
+
   
   
 }
