@@ -1,21 +1,8 @@
-/* Pseudo code.
-   Take in a user choice (rock, paper, or scissors).
-     GUI should provide clickable options
-   Generate a computer choice (rock, paper, scissors).
-   Function playRound takes user choice and computer choice and returns results of the round.
-    Results should appear in GUI.
-   Function game calls playRound to play a first-to-five-points game and reports the winner.
-    Scores and round should be displayed in GUI.
-*/
-
-
-/***************************************************************/
-
 function getElem(classOrId){
   return document.querySelector(classOrId);
 }
 
-function adder(id, initialClasses, type, text, parent, url) {
+function adder(id, initialClasses, type, parent, text, url) {
   const elem = document.createElement(type);
   if(id) elem.setAttribute('id', id);
   if(initialClasses) elem.setAttribute('class', initialClasses);
@@ -29,16 +16,15 @@ function adder(id, initialClasses, type, text, parent, url) {
 const gameLeft = getElem('.game-left');
 const gameRight = getElem('.game-right');
 
-const rockPlayer = adder('rock-player', 'items', 'img', '', gameLeft, 'images/stone-143-130.png')
-const paperPlayer = adder('paper-player', 'items', 'img', '', gameLeft, 'images/paper-114-150.png');
-const scissorsPlayer = adder('scissors-player', 'items', 'img', '', gameLeft, 'images/scissors-75-130.png');
-const rockComp = adder('rock-comp', 'items', 'img', '', gameRight, 'images/stone-143-130.png');
-const paperComp = adder('paper-comp','items', 'img', '', gameRight, 'images/paper-114-150.png');
-const scissorsComp = adder('scissors-comp', 'items', 'img', '', gameRight, 'images/scissors-75-130.png');
+const rockPlayer = adder('rock-player', 'items', 'div', gameLeft, '');
+const paperPlayer = adder('paper-player', 'items', 'div', gameLeft, '');
+const scissorsPlayer = adder('scissors-player', 'items', 'div', gameLeft, '');
+const rockComp = adder('rock-comp', 'items', 'div', gameRight, '');
+const paperComp = adder('paper-comp','items', 'div', gameRight, '');
+const scissorsComp = adder('scissors-comp', 'items', 'div', gameRight, '');
 
 const targetPlayer = getElem('#target-player');
 const targetComp = getElem('#target-comp');
-
 
 const battleLeft = getElem('.battle-left');
 const battleRight = getElem('.battle-right');
@@ -47,17 +33,17 @@ const pScoreScore = getElem('.p-score-score');
 const cScoreScore = getElem('.c-score-score');
 const roundRound = getElem('.round-round');
 
-const startModal = adder('startModal', 'modal', 'div', '', document.body, '');
-const stModalContent = adder('', 'st-modal-content', 'div', '', startModal, '');
-const intro = adder('intro', '', 'div', 'First to five points.', stModalContent, '');
-const startButton = adder('startButton', '', 'button', 'Play Game', stModalContent, '');
+const startModal = adder('startModal', 'modal', 'div', document.body, '');
+const stModalContent = adder('', 'st-modal-content', 'div', startModal, '');
+const intro = adder('intro', '', 'div', stModalContent, 'First to five points.');
+const startButton = adder('startButton', '', 'button', stModalContent, 'Play Game');
 
-const newGmModal = adder('newGmModal', 'modal', 'div', '', document.body, '');
-const ngModalContent = adder('', 'ng-modal-content', 'div', '', newGmModal, '');
-const gmWinMsgBox = adder('gmWinMsgBox', '', 'div', '', ngModalContent, '');
-const ngButton = adder('ngButton', '', 'button', 'New Game', ngModalContent, '');
+const newGmModal = adder('newGmModal', 'modal', 'div', document.body, '');
+const ngModalContent = adder('', 'ng-modal-content', 'div', newGmModal, '');
+const gmWinMsgBox = adder('gmWinMsgBox', '', 'div', ngModalContent, '');
+const ngButton = adder('ngButton', '', 'button', ngModalContent, 'New Game');
 
-const decoy = adder('decoy', '', 'div', '', document.body, '');
+const decoy = adder('decoy', '', 'div', document.body, '');
 
 /* Remember units for custom variables, 
    else: in CSS, use e.g. calc(var(--customVar) * 1px).
@@ -123,13 +109,11 @@ setXY();
 function verifyXY(){
   let tempRockX = initialRockX;
   let tempRockY = initialRockY;
-  // let checkCounter = 0;
   gameLeft.addEventListener('mouseover', () => {
     if(!inPlay){
       const checkX = rockPlayer.getBoundingClientRect().left;
       const checkY = rockPlayer.getBoundingClientRect().top;
-      // checkCounter += 1;
-      // console.log(`checked ${checkCounter} times`);
+      
       if (checkX !== tempRockX || checkY !== tempRockY){
         setXY();
         tempRockX = checkX;
@@ -149,7 +133,7 @@ function noDrag() {
 }
 noDrag();
 
-document.oncontextmenu = new Function("return false;");
+document.oncontextmenu = () => false;
 
 function getComputerChoice() {
   const choice = Math.floor(Math.random() * 3);
@@ -158,7 +142,6 @@ function getComputerChoice() {
       (choice === 0) ? 'rock' :
       (choice === 1) ? 'paper' :
       'scissors'; 
-  console.log(message);
   return message;
 }
 
@@ -186,10 +169,7 @@ function compReady(){
    This should preempt layer squashing by the browser before the transition. Memory usage is negligible. 
 */
 function hintBrowser(){
-  nMouseMove += 1;
-  console.log(nMouseMove);
   // On mousemove over this player element.
-  
   if(this === rockPlayer){
     rockPlayer.classList.add('Z-rock-p');
   } else if(this === paperPlayer){
@@ -211,7 +191,6 @@ function compTransition(){
   }
 }
 
-// probably needs to be in queue
 function setPlayerSelect(playerItem){
   if (playerItem === rockPlayer){
     playerSelect = 'rock';
@@ -222,19 +201,20 @@ function setPlayerSelect(playerItem){
   }
 }
 
-
 function transitionGo(playerItem, addedClass){
   playerItem.addEventListener('click', () => {
     queueN += 1;
     // Preserve queueN specific to lexical context of round click event.
     let m = queueN;
+    // queue() must be declared within click event lexical context to 
+    // access m and to access playerItem and addedClass during rapid 
+    // game play (overlap of queue() instances).
     function queue(){
-      // Verify previous round is complete. Must be declared within 
-      // click event lexical context to access m and playerItem.
-      if(m > (n/2 || inPlay)){
+      // Verify previous round is complete. 
+      if(m > n/2 || inPlay){
         window.requestAnimationFrame(queue);
       } else if(pScore < gmWinN && cScore < gmWinN){
-        /* If game is not finished:
+        /* IF game is not finished:
            On click sequence initiated after doElementsCollide(), 
            animateBattle() and battle() are declared.
         */
@@ -248,13 +228,12 @@ function transitionGo(playerItem, addedClass){
 
           return ((elemOneCenterX > elemTwo.left) &&
                   (elemOneCenterX < elemTwo.right)) &&
-                ((elemOneCenterY > elemTwo.top) &&
+                 ((elemOneCenterY > elemTwo.top) &&
                   (elemOneCenterY < elemTwo.bottom));
         }
 
         function animateBattle(){
           const inBattle = doElementsCollide();
-          console.log('active');
           battleLeft.style.backgroundColor = 
               inBattle && roundWinner === 'player' ? '#00ff0060'
             : inBattle && roundWinner === 'computer' ? '#ff000060'
@@ -303,7 +282,6 @@ function transitionGo(playerItem, addedClass){
         setPlayerSelect(playerItem);
         // Signal to continue animateBattle() inside battle().
         battleAnimEnd = false;
-        // deprecated: chosenPItem = playerItem;
         battle();
         if(pScore < gmWinN && cScore < gmWinN) roundN += 1;
       } else{
@@ -340,7 +318,6 @@ function removeTransition(){
 
 function roundResult(){
   const playerSelection = capitalize(playerSelect);
-  console.log('roundResult test');
   const message = 
     (roundWinner === 'tie') ? `${playerSelection} vs. ${computerSelection}: It\'s a tie!` 
     : (roundWinner === 'player') ? `You win the round! ${playerSelection} beats ${computerSelection}.` 
@@ -357,11 +334,9 @@ function scoreKeeper(){
   } else if(roundWinner === 'computer'){
     cScore += 1;
     cScoreScore.textContent = cScore;
-  } else if(roundWinner === 'tie'){
+  } else{
     tieScore += 1;
-  } else {
-    console.log('scorekeeper error');
-  }
+  } 
 }
 
 function gameWinMsg(){
@@ -419,6 +394,8 @@ function clearBoard(){
   cScore = 0;
   tieScore = 0;
   roundN = 1;
+  queueN = -1;
+  n = 0;
 
   pScoreScore.textContent = pScore;
   cScoreScore.textContent = cScore;
@@ -431,9 +408,8 @@ function clearBoard(){
   
 }
 
-let nMouseMove = 0;
 // gmWinN sets number of round wins needed to win the game.
-let gmWinN = 3;
+let gmWinN = 5;
 let playerSelect = '';
 let roundWinner = '';
 let battleAnimEnd = true;
@@ -445,7 +421,6 @@ let tieScore = 0;
 let roundN = 1;
 let queueN = -1;
 let n = 0;
-/***************************************************************/
 
 startButton.addEventListener('click', () => {
   playRound();
@@ -468,112 +443,24 @@ function playRound() {
   verifyXY();
 
   // Hint the browser: "will-change: transform" for player and computer.
-  
   rockPlayer.addEventListener('mousemove', hintBrowser);
   paperPlayer.addEventListener('mousemove', hintBrowser);
   scissorsPlayer.addEventListener('mousemove', hintBrowser);
-
-
 
   /* onclick, transition playerItem, computer selected item, and battle 
      backgrounds.
      Also sets playerSelect to 'rock', 'paper', or 'scissors' then 
      calls battle():
-      which sets roundWinner to 'tie', 'player' or 'computer';
-      displays the round win message, and updates the scoreboard.
+     which sets roundWinner to 'tie', 'player' or 'computer'; 
+     displays the round win message, and updates the scoreboard.
   */
   transitionGo(rockPlayer, 'rock-p-transition');
   transitionGo(paperPlayer, 'paper-p-transition');
   transitionGo(scissorsPlayer, 'scissors-p-trans');
 
-
-
   const items = document.querySelectorAll('.items');
   items.forEach(item => item.addEventListener('transitionend', removeTransition));
   decoy.addEventListener('transitionend', removeTransition);
 
-  
   cycleRound();
-
-  
-  
 }
-
-
-/* OLD playRound
-function playRound(round) {
-  const playerInput = 
-    (round === 'One') ? prompt(`Round ${round}: Best out of five rounds. \nPlease type your selection: rock, paper, or scissors.`) 
-    : prompt(`Round ${round}: \nPlease type your selection: rock, paper, or scissors.`);
-  // Pressing the prompt cancel button returns null.
-  if(playerInput === null) { 
-    return 'Game canceled.';
-  } 
-    
-  const playerSelection = capitalize(playerInput);
-  if(playerSelection !== 'Rock' && 
-    playerSelection !== 'Paper' && 
-    playerSelection !== 'Scissors'
-    ) {
-      // Without round here, the recursive prompt message will always 
-      // display "Round undefined", and always in the default ternary 
-      // prompt. See "const playerInput" declaration.
-      return playRound(round);
-  } 
-
-  const computerSelection = capitalize(getComputerChoice());
-    
-  const message = 
-    (playerSelection === computerSelection) ? 'It\'s a tie!' 
-    : ((playerSelection === 'Rock' && 
-      computerSelection === 'Scissors') || 
-      (playerSelection === 'Paper' && 
-      computerSelection === 'Rock') ||
-      (playerSelection === 'Scissors' && 
-      computerSelection === 'Paper')
-      ) ? `You win the round! ${playerSelection} beats ${computerSelection}.` 
-    : `Computer wins the round! ${computerSelection} beats ${playerSelection}.`;
-    
-  return message;
-}
-*/
-
-function game() {
-  let playerScore = 0;
-  let computerScore = 0;
-  let tieScore = 0;
-
-  for(let i = 0; i < 5; i++) {
-    let round =
-      (i === 0) ? 'One' 
-      : (i === 1) ? 'Two' 
-      : (i === 2) ? 'Three' 
-      : (i === 3) ? 'Four' 
-      : 'Five';
-
-    let winner = playRound(round);
-    if(winner === 'Game canceled.') {
-      return 'Game canceled.';
-    }
-    console.log(`Round ${round}: ${winner}`);
-        
-    (winner.slice(0, 7) === 'You win') ? playerScore++ 
-    : (winner.slice(0, 8) === 'Computer') ? computerScore++ 
-    : tieScore++;
-  }
-
-  const pluralTie =
-    (tieScore !== 1) ? 's' 
-    : '';
-  const oneWinPlural = 
-    (playerScore !== 1) ? 's'
-    : '';
-
-  const gameWinMessage =
-    (playerScore > computerScore) ? `You won the game ${playerScore} to ${computerScore}, with ${tieScore} tied round${pluralTie}.` 
-    : (computerScore > playerScore) ? `Computer won the game ${computerScore} to ${playerScore} with ${tieScore} tied round${pluralTie}.` 
-    : `You tied the game with the computer with each of you winning ${playerScore} round${oneWinPlural} and tying ${tieScore} round${pluralTie}.`;
-
-  return gameWinMessage;
-}
-

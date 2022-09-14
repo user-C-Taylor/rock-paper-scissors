@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700&display=swap');
 
 body {
   font-family: 'Roboto', 'Helvetica Neue', sans-serif;
   margin: 0;
   min-height: 100vh;
   display: flex;
+  /* Disable highlighting of text and items such as images. */
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none;
@@ -73,6 +74,47 @@ body {
 
 .decoy-o-transition {
   transform: translateZ(0);
+}
+
+#rock-player {
+  background-image: url('images/stone-143-130.png');
+  background-position: center;
+  width: 143px;
+  height: 130px;
+}
+#paper-player {
+  background-image: url('images/paper-114-150.png');
+  background-position: center;
+  width: 114px;
+  height: 150px;
+}
+
+#scissors-player {
+  background-image: url('images/scissors-75-130.png');
+  background-position: center;
+  width: 75px;
+  height: 130px;
+}
+
+#rock-comp {
+  background-image: url('images/stone-143-130.png');
+  background-position: center;
+  width: 143px;
+  height: 130px;
+}
+
+#paper-comp {
+  background-image: url('images/paper-114-150.png');
+  background-position: center;
+  width: 114px;
+  height: 150px;
+}
+
+#scissors-comp {
+  background-image: url('images/scissors-75-130.png');
+  background-position: center;
+  width: 75px;
+  height: 130px;
 }
 
 #rock-player:hover,
@@ -201,7 +243,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   font-size: 20px;
+  padding: 0px 20px;
+  box-sizing: border-box;
 }
 
 #startModal {
@@ -234,14 +279,15 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 520px;
+  width: 560px;
   max-width: 90%;
   background-color: #ad9272;
-  padding: 20px;
+  padding: 20px 30px;
   border-radius: 15px;
   border: 2px solid #944949;
   text-align: center;
   font-size: 30px;
+  box-sizing: border-box;
 }
 
 #intro,
@@ -285,43 +331,3 @@ button:active::selection {
   background-color: #80450a;
   color: #f9faf8;
 }
-
-/*
-
-button::selection {
-    background-color: #3882f6;
-    color: #f9faf8;
-}
-
-button:hover {
-    background-color: #3272d8;
-    cursor: pointer;
-}
-
-button:active {
-    background-color: #5d96f3;
-    transform: scale(1.05);
-    transition: all ease-in-out;
-}
-
-/* In some instances background of the action section button text would 
-   retain :hover background-color. Maybe this helps. Hard to replicate. 
-   
-   .hero-left button:active::selection {
-    background-color: #5d96f3;
-    color: #f9faf8;
-}
-
-button {
-  font-size: 18px;
-  color: #f9faf8;
-  background-color: #3882f6;
-  font-weight: 700;
-  padding: 8px 30px;
-  border: none;
-  border-radius: 8px;
-    comment: "max-content" keeps buttons from getting crushed by flex as the 
-       .action-container flexing could do. 
-  width: max-content;
-}
-*/
