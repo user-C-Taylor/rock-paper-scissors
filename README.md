@@ -5,7 +5,8 @@ At first, this was a console game of Rock, Paper, Scissors. Later in the Odin cu
 To play the GUI game, navigate to the GUI game <a href='https://user-c-taylor.github.io/rock-paper-scissors/'>web page</a> and click the "Play Game" button. Click on the item of your choice to battle the computer in Rock, Paper, Scissors. Enjoy!
 
 I transitioned the items using the stylesheet, classes, and custom variables and used requestAnimationFrame() for the battlefield transitions. If I did the game over again I would probably use requestAnimationFrame(), instead of the stylesheet and classes, requiring less work to adapt to rapid game play.
-
+<br/>
+<br/>
 <img src='images/gui-rps.gif'>
 
 ## Console Game
