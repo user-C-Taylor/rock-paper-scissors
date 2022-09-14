@@ -1,5 +1,5 @@
 # rock-paper-scissors
-At first, this was a console game of Rock, Paper, Scissors. Later in the Odin curriculum, a GUI and related updates were added.
+At first, this was a console game of Rock, Paper, Scissors. Later in the Odin curriculum, a GUI and related updates were added. The GUI game should be compatible with Chrome on PCs.
 
 ## GUI Game
 To play the GUI game, navigate to the GUI game <a href='https://user-c-taylor.github.io/rock-paper-scissors/'>web page</a> and click the "Play Game" button. Click on the item of your choice to battle the computer in Rock, Paper, Scissors. Enjoy!
