@@ -1,4 +1,4 @@
-# rock-paper-scissors
+# Rock Paper Scissors
 At first, this was a console game of Rock, Paper, Scissors. Later in the Odin curriculum, a GUI and related updates were added. The GUI game should be compatible with Chrome on PCs.
 
 ## GUI Game
@@ -18,6 +18,5 @@ Public Domain Pictures: <a href='https://pixabay.com/users/publicdomainpictures-
 
 Michael Schwarzenberger: <a href='https://pixabay.com/users/blickpixel-52945/'>Pixabay profile</a>
 
-
-For the icons: <a href='https://pngimg.com/'>pngimg.com</a>, <a href='https://seekpng.com/'>seekpng.com</a>, and <a href='https://toppng.com/'>toppng.com</a>
+For the items: <a href='https://pngimg.com/'>pngimg.com</a>, <a href='https://seekpng.com/'>seekpng.com</a>, and <a href='https://toppng.com/'>toppng.com</a>
 
